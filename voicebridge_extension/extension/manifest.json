@@ -1,0 +1,20 @@
+{
+  "manifest_version": 3,
+  "name": "VoiceBridge Accessibility Tool",
+  "version": "1.0",
+  "description": "AI-powered Tamil & English Voice Web Navigation",
+  "permissions": ["activeTab", "scripting"],
+  "host_permissions": ["http://localhost:5000/*"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"]
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html"
+  }
+}
