@@ -40,7 +40,7 @@ function startVoice() {
 
       console.log("Backend response ", data);
 
-      executeAction(data);
+      if(!data) executeAction(data);
     } catch (error) {
       console.error("Backend error:", error);
     }
@@ -74,7 +74,7 @@ window.addEventListener("load", () => {
 
   setInterval(() => {
     pageElements = scanPage();
-  }, 3000);
+  }, 5000);
 });
 
 function scanPage() {
@@ -102,7 +102,8 @@ function scanPage() {
 function detectElement(command){
 
     command = command.toLowerCase();
-    command = command.replace(/open|go|to|the/g,"").trim();
+
+    command = command.replace(/open|go|to|the|navigate|show|please/g,"").trim();
 
     const words = command.split(" ");
 
@@ -110,11 +111,12 @@ function detectElement(command){
 
         for(let word of words){
 
-            if(item.text.includes(word)){
+            if(item.text === word || item.text.includes(word)){
 
                 console.log("Matched element:", item.text);
 
                 item.element.click();
+
                 return true;
             }
         }
@@ -130,7 +132,7 @@ function detectFormFill(command){
 
     command = command.toLowerCase();
 
-    const inputs = document.querySelectorAll("input, textarea");
+    const inputs = document.querySelectorAll("input, textarea, [contenteditable]");
 
     for(let input of inputs){
 
