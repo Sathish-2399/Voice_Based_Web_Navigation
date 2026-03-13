@@ -12,6 +12,8 @@ function startVoice() {
     return;
   }
 
+  pageElements = scanPage();
+
   recognition = new (
     window.SpeechRecognition || window.webkitSpeechRecognition
   )();
@@ -110,11 +112,20 @@ function detectElement(command){
 
         for(let word of words){
 
-            if(item.text.includes(word)){
+            if(item.text.includes(word) || word.includes(item.text)){
 
                 console.log("Matched element:", item.text);
 
-                item.element.click();
+                if(item.element.href){
+                    window.location.href = item.element.href;
+                }else{
+                    item.element.click();
+                }
+
+                setTimeout(()=>{
+                    pageElements = scanPage();
+                },800);
+
                 return true;
             }
         }
