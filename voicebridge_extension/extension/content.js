@@ -83,12 +83,12 @@ function scanPage() {
   const elements = [];
 
   const candidates = document.querySelectorAll(
-    "a[href], button, [role='button']",
+    "a[href], button, [role='button'], li a, div[role='menuitem'], nav a",
   );
 
   candidates.forEach((el) => {
     const text = el.innerText.trim();
-    if (text.length > 0 && el.offsetParent !== null) {
+    if (text.length > 0) {
       elements.push({
         text: text.toLowerCase(),
         element: el,
@@ -106,28 +106,23 @@ function detectElement(command){
     command = command.toLowerCase();
     command = command.replace(/open|go|to|the/g,"").trim();
 
-    const words = command.split(" ");
-
     for (let item of pageElements){
 
-        for(let word of words){
+        if(command.includes(item.text) || item.text.includes(command)){
 
-            if(item.text.includes(word) || word.includes(item.text)){
+            console.log("Matched element:", item.text);
 
-                console.log("Matched element:", item.text);
-
-                if(item.element.href){
-                    window.location.href = item.element.href;
-                }else{
-                    item.element.click();
-                }
-
-                setTimeout(()=>{
-                    pageElements = scanPage();
-                },800);
-
-                return true;
+            if(item.element.href){
+                window.location.href = item.element.href;
+            }else{
+                item.element.click();
             }
+
+            setTimeout(()=>{
+                pageElements = scanPage();
+            },800);
+
+            return true;
         }
     }
 
@@ -135,6 +130,41 @@ function detectElement(command){
 
     return false;
 }
+
+// function detectElement(command){
+
+//     command = command.toLowerCase();
+//     command = command.replace(/open|go|to|the/g,"").trim();
+
+//     const words = command.split(" ");
+
+//     for (let item of pageElements){
+
+//         for(let word of words){
+
+//             if(item.text.includes(word) || word.includes(item.text)){
+
+//                 console.log("Matched element:", item.text);
+
+//                 if(item.element.href){
+//                     window.location.href = item.element.href;
+//                 }else{
+//                     item.element.click();
+//                 }
+
+//                 setTimeout(()=>{
+//                     pageElements = scanPage();
+//                 },800);
+
+//                 return true;
+//             }
+//         }
+//     }
+
+//     console.log("No matching commands");
+
+//     return false;
+// }
 
 
 function detectFormFill(command){
