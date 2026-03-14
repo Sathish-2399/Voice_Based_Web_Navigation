@@ -3,8 +3,17 @@
   "name": "VoiceBridge Accessibility Tool",
   "version": "1.0",
   "description": "AI-powered Tamil & English Voice Web Navigation",
-  "permissions": ["activeTab", "scripting"],
-  "host_permissions": ["http://localhost:5000/*"],
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "tabs",
+    "offscreen"
+  ],
+  "host_permissions": [
+    "http://localhost:5000/*",
+    "http://localhost:5001/*",
+    "<all_urls>"
+  ],
   "background": {
     "service_worker": "background.js"
   },
